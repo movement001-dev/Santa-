@@ -75,11 +75,6 @@ button:hover { background: #fff176; }
   border-radius: 50%;
   display: block;
 }
-#message {
-  font-size: 1.2rem;
-  margin-top: 1rem;
-  font-weight: bold;
-}
 #spinsLeft {
   font-size: 1rem;
   margin-top: 0.5rem;
@@ -93,6 +88,36 @@ button:hover { background: #fff176; }
   animation: fall linear infinite;
 }
 @keyframes fall { to { transform: translateY(100vh); opacity: 0; } }
+
+/* Popup Modal */
+#popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+#popup .content {
+  background: #fff;
+  color: #000;
+  border-radius: 10px;
+  padding: 1.5rem;
+  width: 80%;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(255,255,255,0.8);
+}
+#popup h3 {
+  color: #b71c1c;
+}
+#popup button {
+  background: #1b5e20;
+  color: #fff;
+  margin-top: 10px;
+}
 @media(max-width:600px){
   #wheel{width:250px; height:250px;}
   .slice{font-size:0.8rem;}
@@ -109,8 +134,16 @@ button:hover { background: #fff176; }
   <div id="wheel"></div>
   <button id="spinBtn">🎁 Spin for a Gift!</button>
   <p id="spinsLeft">Spins left: 5</p>
-  <p id="message"></p>
 </main>
+
+<!-- Popup Modal -->
+<div id="popup">
+  <div class="content">
+    <h3>🎅 Santa Says...</h3>
+    <p id="popupMessage"></p>
+    <button id="okBtn">OK</button>
+  </div>
+</div>
 
 <div id="snowflake"></div>
 
@@ -122,9 +155,11 @@ const gifts = [
 const colors = ["#d32f2f","#388e3c","#fbc02d","#8e24aa","#e64a19","#0288d1","#f57f17","#7b1fa2"];
 
 const wheel = document.getElementById("wheel");
-const message = document.getElementById("message");
 const spinBtn = document.getElementById("spinBtn");
 const spinsLeftEl = document.getElementById("spinsLeft");
+const popup = document.getElementById("popup");
+const popupMessage = document.getElementById("popupMessage");
+const okBtn = document.getElementById("okBtn");
 
 let spinsLeft = 5;
 let spinning = false;
@@ -151,6 +186,7 @@ function createSnowflake() {
 }
 setInterval(createSnowflake,150);
 
+// Spin logic
 spinBtn.addEventListener("click", () => {
   if (spinning || spinsLeft <= 0) return;
 
@@ -167,12 +203,22 @@ spinBtn.addEventListener("click", () => {
     const sliceAngle = 360 / gifts.length;
     const index = Math.floor((360 - normalized) / sliceAngle) % gifts.length;
     const giftWon = gifts[index];
-    message.textContent = `🎅 Ho ho ho! You’ve won ${giftWon}!`;
-    if (spinsLeft === 0) {
-      spinBtn.disabled = true;
-      message.textContent += " 🎄 That’s all your spins, Merry Christmas!";
-    }
+    showPopup(giftWon);
   }, 4200);
+});
+
+function showPopup(gift) {
+  popup.style.display = "flex";
+  if (spinsLeft > 0) {
+    popupMessage.textContent = `Ho ho ho! You’ve won ${gift}! 🎄✨`;
+  } else {
+    popupMessage.textContent = `Ho ho ho! You’ve won ${gift}! 🎁 That was your last spin. Merry Christmas! 🎅`;
+    spinBtn.disabled = true;
+  }
+}
+
+okBtn.addEventListener("click", () => {
+  popup.style.display = "none";
 });
 </script>
 </body>
