@@ -3,115 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>🎄 Chat with Santa Live from the North Pole 🎅</title>
+<title>🎡 Spin for Santa’s Gifts 🎅</title>
 <style>
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  background: linear-gradient(#d32f2f, #b71c1c);
-  color: #fff;
+  font-family: 'Poppins', system-ui, sans-serif;
+  background: url('https://images.unsplash.com/photo-1513595207829-9f4e4c9b9e51?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+  color: #fff;
+  text-align: center;
 }
 header {
-  text-align: center;
-  padding: 1rem 0;
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(4px);
-  font-weight: 700;
-  font-size: 1.3rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-}
-#chat {
-  flex: 1;
-  overflow-y: auto;
+  background: rgba(183, 28, 28, 0.85);
   padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.msg {
-  max-width: 75%;
-  padding: 10px 14px;
-  border-radius: 12px;
-  line-height: 1.4;
-}
-.santa {
-  align-self: flex-start;
-  background: rgba(255,255,255,0.2);
-}
-.user {
-  align-self: flex-end;
-  background: #2e7d32;
-}
-#input-area {
-  display: flex;
-  gap: 10px;
-  padding: 0.8rem;
-  background: rgba(255,255,255,0.1);
-}
-#input-area input {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  outline: none;
-}
-#input-area button {
-  background: #ffd54f;
-  color: #b71c1c;
+  font-size: 1.6rem;
   font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 16px;
-  cursor: pointer;
-}
-#nice-btn {
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  background: #1b5e20;
-  color: #fff;
-  border: none;
-  border-radius: 50px;
-  padding: 12px 20px;
-  font-weight: bold;
-  cursor: pointer;
   box-shadow: 0 2px 5px rgba(0,0,0,0.4);
 }
-#nice-modal {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: none;
-  align-items: center;
+main {
+  margin-top: 1rem;
+}
+#wheel {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  border: 8px solid #fff;
+  margin: 2rem auto;
+  position: relative;
+  overflow: hidden;
+  transition: transform 4s ease-out;
+}
+.slice {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  background: red;
+  transform-origin: 100% 100%;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
+  display: flex;
   justify-content: center;
-}
-#nice-modal .content {
-  background: #fff; color: #000;
-  padding: 20px;
-  border-radius: 10px;
-  width: 90%; max-width: 400px;
-  text-align: center;
-}
-#nice-modal input {
-  width: 80%;
-  padding: 8px;
-  margin: 5px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-#nice-modal button {
-  margin-top: 10px;
-  padding: 8px 14px;
-  background: #b71c1c;
+  align-items: center;
   color: #fff;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+#pointer {
+  width: 0; 
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 30px solid gold;
+  margin: 0 auto;
+  position: relative;
+  top: -10px;
+}
+button {
+  background: #ffcc00;
+  color: #b71c1c;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
+  margin-top: 10px;
+}
+button:hover { background: #fff176; }
+#santa {
+  width: 120px;
+  margin: 1rem auto;
+  border-radius: 50%;
+  display: block;
+}
+#message {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+#spinsLeft {
+  font-size: 1rem;
+  margin-top: 0.5rem;
 }
 #snowflake span {
   position: absolute;
@@ -122,120 +93,87 @@ header {
   animation: fall linear infinite;
 }
 @keyframes fall { to { transform: translateY(100vh); opacity: 0; } }
-.santa-avatar {
-  width: 40px; height: 40px; border-radius: 50%; margin-right: 8px; vertical-align: middle;
+@media(max-width:600px){
+  #wheel{width:250px; height:250px;}
+  .slice{font-size:0.8rem;}
 }
 </style>
 </head>
 <body>
-<header>🎅 Chat with Santa Live from the North Pole 🎄</header>
-<div id="chat"></div>
+<header>🎡 Spin for Santa’s Gifts 🎅</header>
 
-<div id="input-area">
-  <input id="userInput" type="text" placeholder="Type your message to Santa...">
-  <button id="sendBtn">Send</button>
-</div>
+<img src="https://cdn-icons-png.flaticon.com/512/3330/3330422.png" alt="Santa" id="santa">
 
-<button id="nice-btn">🎁 Check Nice List</button>
-
-<div id="nice-modal">
-  <div class="content">
-    <h3>Check if You're on the Nice List 🎄</h3>
-    <input id="nameInput" placeholder="Your name"><br>
-    <input id="deedInput" placeholder="A good deed you did"><br>
-    <button id="checkBtn">Check</button>
-    <button id="closeBtn">Close</button>
-  </div>
-</div>
+<main>
+  <div id="pointer"></div>
+  <div id="wheel"></div>
+  <button id="spinBtn">🎁 Spin for a Gift!</button>
+  <p id="spinsLeft">Spins left: 5</p>
+  <p id="message"></p>
+</main>
 
 <div id="snowflake"></div>
 
 <script>
-const chat = document.getElementById("chat");
-const input = document.getElementById("userInput");
-const btn = document.getElementById("sendBtn");
-let userName = "";
+const gifts = [
+  "🎁 Candy Cane", "🍪 Magic Cookie", "🧸 Elf Toy", "🦌 Reindeer Plushie",
+  "🎅 Santa Hat", "❄️ Snow Globe", "🔔 Christmas Bell", "🧦 Cozy Socks"
+];
+const colors = ["#d32f2f","#388e3c","#fbc02d","#8e24aa","#e64a19","#0288d1","#f57f17","#7b1fa2"];
 
-// 🧠 YOUR OPENAI API KEY HERE
-const OPENAI_API_KEY = "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";
+const wheel = document.getElementById("wheel");
+const message = document.getElementById("message");
+const spinBtn = document.getElementById("spinBtn");
+const spinsLeftEl = document.getElementById("spinsLeft");
 
-function addMessage(text, sender = "santa") {
-  const msg = document.createElement("div");
-  msg.classList.add("msg", sender);
-  msg.innerHTML =
-    sender === "santa"
-      ? `<img src="https://www.shutterstock.com/image-illustration/cute-avatar-cartoon-santa-claus-260nw-2373881501.jpg" class="santa-avatar"> ${text}`
-      : text;
-  chat.appendChild(msg);
-  chat.scrollTop = chat.scrollHeight;
+let spinsLeft = 5;
+let spinning = false;
+
+// Create slices dynamically
+for(let i=0; i<gifts.length; i++){
+  const slice = document.createElement("div");
+  slice.className = "slice";
+  slice.style.background = colors[i % colors.length];
+  slice.style.transform = `rotate(${i * (360 / gifts.length)}deg) skewY(${90 - (360 / gifts.length)}deg)`;
+  slice.textContent = gifts[i];
+  wheel.appendChild(slice);
 }
-
-async function santaReply(message) {
-  addMessage("Santa is typing... 🎅", "santa");
-  const messages = [
-    { role: "system", content: "You are Santa Claus. Always reply jolly, say 'Ho ho ho!', mention elves, reindeer, and Christmas cheer. Be festive, kind, and fun." },
-    { role: "user", content: userName ? `${userName} says: ${message}` : message }
-  ];
-
-  try {
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages
-      })
-    });
-    const data = await res.json();
-    chat.lastChild.remove(); // remove typing indicator
-    const reply = data.choices?.[0]?.message?.content || "Ho ho ho! Merry Christmas!";
-    addMessage(reply, "santa");
-  } catch (err) {
-    console.error(err);
-    chat.lastChild.remove();
-    addMessage("Ho ho ho! Santa’s workshop is busy! Try again soon!", "santa");
-  }
-}
-
-btn.onclick = () => {
-  const text = input.value.trim();
-  if (!text) return;
-  addMessage(text, "user");
-  input.value = "";
-  santaReply(text);
-};
-input.addEventListener("keypress", e => e.key === "Enter" && btn.click());
-
-// Nice List feature
-document.getElementById("nice-btn").onclick = () =>
-  (document.getElementById("nice-modal").style.display = "flex");
-document.getElementById("closeBtn").onclick = () =>
-  (document.getElementById("nice-modal").style.display = "none");
-document.getElementById("checkBtn").onclick = () => {
-  const name = document.getElementById("nameInput").value.trim();
-  const deed = document.getElementById("deedInput").value.trim();
-  if (!name || !deed) return alert("Please fill in both fields!");
-  userName = name;
-  addMessage(`Ho ho ho, ${name}! That ${deed} was a wonderful deed! You're on the Nice List! 🎁`);
-  document.getElementById("nice-modal").style.display = "none";
-};
 
 // Snow animation
 function createSnowflake() {
   const snow = document.createElement("span");
   snow.textContent = "❄";
-  snow.style.left = Math.random() * 100 + "%";
-  snow.style.fontSize = 10 + Math.random() * 14 + "px";
-  snow.style.animationDuration = 5 + Math.random() * 5 + "s";
+  snow.style.left = Math.random()*100 + "%";
+  snow.style.fontSize = 10 + Math.random()*14 + "px";
+  snow.style.animationDuration = 5 + Math.random()*5 + "s";
   document.getElementById("snowflake").appendChild(snow);
-  setTimeout(() => snow.remove(), 10000);
+  setTimeout(()=>snow.remove(),10000);
 }
-setInterval(createSnowflake, 150);
+setInterval(createSnowflake,150);
 
-addMessage("Ho ho ho! Welcome to Santa's Chat! 🎄");
+spinBtn.addEventListener("click", () => {
+  if (spinning || spinsLeft <= 0) return;
+
+  spinning = true;
+  spinsLeft--;
+  spinsLeftEl.textContent = `Spins left: ${spinsLeft}`;
+
+  const randomDegree = 3600 + Math.floor(Math.random() * 360);
+  wheel.style.transform = `rotate(${randomDegree}deg)`;
+
+  setTimeout(() => {
+    spinning = false;
+    const normalized = randomDegree % 360;
+    const sliceAngle = 360 / gifts.length;
+    const index = Math.floor((360 - normalized) / sliceAngle) % gifts.length;
+    const giftWon = gifts[index];
+    message.textContent = `🎅 Ho ho ho! You’ve won ${giftWon}!`;
+    if (spinsLeft === 0) {
+      spinBtn.disabled = true;
+      message.textContent += " 🎄 That’s all your spins, Merry Christmas!";
+    }
+  }, 4200);
+});
 </script>
 </body>
-                                                      </html>
+  </html>
